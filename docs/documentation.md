@@ -2,7 +2,7 @@
 
 ### Services
 
--   [FusionAuthService](context.md#fusionauthprovider)
+-   [FusionAuthService](services.md#fusionauthservice)
 
 ### Components
 
@@ -12,5 +12,5 @@
 
 ### Modules
 
--   [FusionAuthModule](functions.md#usefusionauth)
--   [withFusionAuth](functions.md#withfusionauth)
+-   [FusionAuthModule](modules.md#fusionauthmodule)
+-   [FusionAuthConfig](modules.md#fusionauthconfig)
