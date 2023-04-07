@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FusionAuthService } from "../../fusion-auth.service";
+import { FusionAuthService } from '../../fusion-auth.service';
 
 @Component({
   selector: 'fa-register',
@@ -8,6 +8,7 @@ import { FusionAuthService } from "../../fusion-auth.service";
 })
 export class FusionAuthRegisterButtonComponent {
   @Input() state: string | undefined;
+
   constructor(
     private fusionAuth: FusionAuthService,
   ) {}

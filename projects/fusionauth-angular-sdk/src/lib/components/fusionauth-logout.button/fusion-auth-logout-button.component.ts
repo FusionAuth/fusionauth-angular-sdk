@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FusionAuthService } from "../../fusion-auth.service";
+import { FusionAuthService } from '../../fusion-auth.service';
 
 @Component({
   selector: 'fa-logout',
