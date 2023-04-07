@@ -1,11 +1,17 @@
 {
   "name": "@fusionauth/angular-sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "private": false,
   "peerDependencies": {
     "@angular/common": "^13.3.0",
     "@angular/core": "^13.3.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "git@github.com:FusionAuth/fusionauth-angular-sdk.git",
+  "readme": ""
 }

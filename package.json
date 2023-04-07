@@ -2,7 +2,8 @@
   "name": "fusionauth-angular-sdk-parent",
   "version": "0.0.1",
   "scripts": {
-    "ng": "ng"
+    "ng": "ng",
+    "build-sdk": "ng build fusionauth-angular-sdk && cp README.md dist/fusionauth-angular-sdk/README.md"
   },
   "private": true,
   "dependencies": {

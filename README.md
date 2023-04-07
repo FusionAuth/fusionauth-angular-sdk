@@ -330,7 +330,7 @@ To perform a release:
 
 -   Bump the version in [package.json](./projects/fusionauth-angular-sdk/package.json)
 
--   Run `ng build fusionauth-angular-sdk`
+-   Run `npm run build-sdk`
 
 -   Run `cd dist/fusionauth-angular-sdk`
 
