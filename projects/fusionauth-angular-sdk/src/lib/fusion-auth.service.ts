@@ -56,7 +56,7 @@ export class FusionAuthService {
    * @return {boolean} app.at_exp is present and not for a time in the past
    */
   isLoggedIn(): boolean {
-    return !!this.getExpTime();
+    return (this.getExpTime() ?? 0) > new Date().getTime();
   }
 
   /**
