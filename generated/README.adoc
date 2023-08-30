@@ -1,21 +1,18 @@
-An SDK for using FusionAuth in React applications.
+An SDK for using FusionAuth in Angular applications.
 
 *This is currently in beta testing. We're working towards a 1.0
-release. You can https://github.com/FusionAuth/fusionauth-issues/issues/2049[track that progress
-here].*
+release.*
 
 == Table of Contents
 
 * <<overview,Overview>>
 * <<getting-started,Getting Started>>
- ** <<installation,Installation>>
- ** <<configuring-provider,Configuring Provider>>
- ** <<server-code-requirements,Server Code Requirements>>
+* <<installation,Installation>>
+* <<server-code-requirements,Server Code Requirements>>
 * <<usage,Usage>>
- ** <<pre-built-buttons,Pre-built buttons>>
- ** <<programmatic-usage,Programmatic usage>>
- ** <<protecting-content,Protecting content>>
- ** <<known-issues,Known issues>>
+* <<pre-built-buttons,Pre-built buttons>>
+* <<service-usage,Service usage>>
+* <<known-issues,Known issues>>
 * <<example-app,Example App>>
 * <<documentation,Documentation>>
 * <<releases,Releases>>
@@ -31,11 +28,11 @@ Please also use ``` instead of indenting for code blocks. The backticks are tran
 == Overview
 
 This SDK allows you to add login, logout, and registration buttons to
-your React application. You can do this via pre-built buttons, hooks, or
-higher-order components.
+your Angular application. You can do this via pre-built buttons, or with
+the FusionAuthService in your own components.
 
 Your users will be sent to FusionAuth's themeable hosted login pages and
-then log in. After that, they are sent back to your React application.
+then log in. After that, they are sent back to your Angular application.
 
 Once authentication succeeds, the following secure, HTTP-only cookies
 will be set:
@@ -65,39 +62,41 @@ NPM:
 
 [,bash]
 ----
-npm install @fusionauth/react-sdk
+npm install @fusionauth/angular-sdk
 ----
 
 Yarn:
 
 [,bash]
 ----
-yarn add @fusionauth/react-sdk
+yarn add @fusionauth/angular-sdk
 ----
 
-=== Configuring Provider
+=== Configuring FusionAuthModule
 
 To configure the SDK, wrap your app with `FusionAuthProvider`:
 
-[,react]
+[,typescript]
 ----
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { FusionAuthProvider } from '@fusionauth/react-sdk';
-import App from './App';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
-const container = document.getElementById('root');
-const root = createRoot(container!);
+import { AppRoutingModule } from './app-routing.module';
+import { FusionAuthModule } from '@fusionauth/angular-sdk';
 
-    root.render(
-        <FusionAuthProvider
-            clientID=""     // Your FusionAuth client ID
-            serverUrl=""    // The base URL of your server for the token exchange
-            redirectUri=""  // The URI that the user is directed to after the login/register/logout action
-        >
-            <App />
-        </FusionAuthProvider>
-    );
+@NgModule({
+  declarations: [],
+  imports: [
+    FusionAuthModule.forRoot({
+      clientId: '', // Your FusionAuth client ID
+      serverUrl: '', // The base URL of your server for the token exchange
+      redirectUri: '', // The URI that the user is directed to after the login/register/logout action
+    }),
+  ],
+  providers: [],
+  bootstrap: []
+})
+export class AppModule { }
 ----
 
 === Server Code Requirements
@@ -113,10 +112,10 @@ This endpoint must:
 . Generate PKCE code.
 a. The code verifier should be saved in a secure HTTP-only cookie.
 b. The code challenge is passed along
-. Encode and save `redirect_url` from react app to `state`.
+. Encode and save `redirect_url` from angular app to `state`.
 . Redirect browser to `/oauth2/authorize` with a `redirect_uri` to `/app/token-exchange`
 
-https://github.com/FusionAuth/fusionauth-example-react-sdk/blob/main/server/routes/login.js[Example
+https://github.com/FusionAuth/fusionauth-example-angular-sdk/blob/main/server/routes/login.js[Example
 implementation]
 
 ==== `GET /app/callback`
@@ -141,7 +140,7 @@ https://fusionauth.io/docs/v1/tech/oauth/endpoints#userinfo[/oauth2/userinfo]
 to retrieve the user info object and respond back to the client with
 this object.
 
-https://github.com/FusionAuth/fusionauth-example-react-sdk/blob/main/server/routes/callback.js[Example
+https://github.com/FusionAuth/fusionauth-example-angular-sdk/blob/main/server/routes/callback.js[Example
 implementation]
 
 ==== `GET /app/register`
@@ -151,10 +150,10 @@ This endpoint is similar to `/login`.  It must:
 . Generate PKCE code.
 a. The code verifier should be saved in a secure HTTP-only cookie.
 b. The code challenge is passed along
-. Encode and save `redirect_url` from react app to `state`.
+. Encode and save `redirect_url` from angular app to `state`.
 . Redirect browser to `/oauth2/register` with a `redirect_uri` to `/app/callback`
 
-https://github.com/FusionAuth/fusionauth-example-react-sdk/blob/main/server/routes/register.js[Example
+https://github.com/FusionAuth/fusionauth-example-angular-sdk/blob/main/server/routes/register.js[Example
 implementation]
 
 ==== `GET /app/me`
@@ -164,7 +163,7 @@ This endpoint must:
 . Use `app.at` from cookie and use as the Bearer token to call `/oauth2/userinfo`
 . Return json data
 
-https://github.com/FusionAuth/fusionauth-example-react-sdk/blob/main/server/routes/me.js[Example
+https://github.com/FusionAuth/fusionauth-example-angular-sdk/blob/main/server/routes/me.js[Example
 implementation]
 
 ==== `GET /app/logout`
@@ -176,10 +175,10 @@ cookies.
 . Clear the `app.at_exp` and `app.idt` secure cookies.
 . Redirect to `/oauth2/logout`
 
-https://github.com/FusionAuth/fusionauth-example-react-sdk/blob/main/server/routes/logout.js[Example
+https://github.com/FusionAuth/fusionauth-example-angular-sdk/blob/main/server/routes/logout.js[Example
 implementation]
 
-==== `POST /app/token-refresh` (optional)
+==== `POST /app/refresh` (optional)
 
 This endpoint is necessary if you wish to use refresh tokens. This
 endpoint must:
@@ -190,7 +189,7 @@ to get a new `app.at` and `app.rt`.
 . Update the `app.at`, `app.at_exp`, `app.idt`, and `app.rt` cookies from the
 response.
 
-https://github.com/FusionAuth/fusionauth-example-react-sdk/blob/main/server/routes/token-refresh.js[Example
+https://github.com/FusionAuth/fusionauth-example-angular-sdk/blob/main/server/routes/token-refresh.js[Example
 implementation]
 
 == Usage
@@ -201,196 +200,120 @@ There are three pre-styled buttons that are configured to perform
 login/logout/registration. They can be placed anywhere in your app as
 is.
 
-[,react]
+[,typescript]
 ----
-import {
-  FusionAuthLoginButton,
-  FusionAuthLogoutButton,
-  FusionAuthRegisterButton
-} from '@fusionauth/react-sdk';
+import { Component } from '@angular/core';
 
-export const LoginPage = () => (
-  <>
-    <h1>Welcome, please log in or register</h1>
-    <FusionAuthLoginButton />
-    <FusionAuthRegisterButton />
-  </>
-);
+@Component({
+  selector: 'app-login',
+  template: `<fa-login></fa-login>`,
+  styleUrls: []
+})
+export class LoginComponent {}
 
-export const AccountPage = () => (
-  <>
-    <h1>Hello, user!</h1>
-    <FusionAuthLogoutButton />
-  </>
-);
-----
+@Component({
+  selector: 'app-logout',
+  template: `<fa-logout></fa-logout>`,
+  styleUrls: []
+})
+export class LogoutComponent {}
 
-=== Programmatic usage
-
-Alternatively, you may interact with the SDK programmatically using the
-`useFusionAuth` hook or `withFusionAuth` HOC.
-
-==== useFusionAuth
-
-Use the `useFusionAuth` hook with your functional components to get
-access to the properties exposed by
-https://github.com/FusionAuth/fusionauth-react-sdk/blob/main/docs/context.md#fusionauthcontext[FusionAuthContext]:
-
-[,react]
-----
-import React from 'react';
-import { useFusionAuth } from '@fusionauth/react-sdk';
-
-const App = () => {
-  const { login, logout, register, isAuthenticated } = useFusionAuth();
-
-  return isAuthenticated ? (
-    <div>
-      <span>Hello, user!</span>
-      <button onClick={() => logout()}>Logout</button>
-    </div>
-  ) : (
-    <div>
-      <button onClick={() => login()}>Log in</button>
-      <button onClick={() => register()}>Register</button>
-    </div>
-  );
-};
+@Component({
+  selector: 'app-register',
+  template: `<fa-register></fa-register>`,
+  styleUrls: []
+})
+export class RegisterComponent {}
 ----
 
-See
-https://github.com/FusionAuth/fusionauth-react-sdk/blob/main/docs/functions.md#usefusionauth[useFusionAuth]
-for more details.
+=== Service usage
 
-==== withFusionAuth
+Alternatively, you may interact with the SDK Service by injecting the FusionAuthService into any component or service.
 
-The `withFusionAuth` higher-order component can be used to wrap your
-components and give them access to a `fusionAuth` prop which contains
-all the properties exposed by the `FusionAuthContext`. This works with
-both functional and class components:
-
-===== Functional Component
-
-[,react]
+[,typescript]
 ----
-import React from 'react';
-import { withFusionAuth, WithFusionAuthProps } from '@fusionauth/react-sdk';
+import { Component, OnInit } from '@angular/core';
+import { FusionAuthService, UserInfo } from '@fusionauth/angular-sdk';
 
-const LogoutButton: React.FC<WithFusionAuthProps> = props => {
-  const { logout } = props.fusionAuth;
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
+})
+export class AppComponent implements OnInit {
+  private userInfo: UserInfo;
 
-  return <button onClick={() => logout()}>Logout</button>;
-}
+  constructor(
+    private fusionAuth: FusionAuthService,
+  ) {}
 
-export default withFusionAuth(LogoutButton);
-----
+  async ngOnInit(): Promise<void> {
+    this.fusionAuth.initAutoRefresh();
+  }
 
-===== Class Component
+  login() {
+    this.fusionAuth.startLogin();
+  }
 
-[,react]
-----
-import React, { Component } from 'react';
-import { withFusionAuth, WithFusionAuthProps } from '@fusionauth/react-sdk';
+  register() {
+    this.fusionAuth.startRegistration();
+  }
 
-class LogoutButton extends Component<WithFusionAuthProps> {
-  render() {
-    const { logout } = this.props.fusionAuth;
-    return <button onClick={() => logout()}>Logout</button>;
+  logout() {
+    this.fusionAuth.logout();
+  }
+
+  refreshToken() {
+    this.fusionAuth.refreshToken();
+  }
+
+  async getUserInfo() {
+    this.userInfo = await this.fusionAuth.getUserInfo();
+  }
+
+  isLoggedIn(): boolean {
+    return this.fusionAuth.isLoggedIn();
   }
 }
-
-export default withFusionAuth(LogoutButton);
 ----
-
-See
-https://github.com/FusionAuth/fusionauth-react-sdk/blob/main/docs/functions.md#withfusionauth[withFusionAuth]
-for more details.
 
 ==== State parameter
 
-The `login` and `register` functions both accept an optional string
-parameter called `state`. The state that is passed in to the function
-call will be passed back to the `onRedirectSuccess` handler on your
-`FusionAuthProvider`. Though you may pass any value you would like for
-the state parameter, it is often used to indicate which page the user
-was on before redirecting to login or registration, so that the user can
-be returned to that location after a successful authentication.
-
-=== Protecting Content
-
-The `RequireAuth` component can be used to protect information from
-unauthorized users. It takes an optional prop `withRole` that can be
-used to ensure the user has a specific role.
-
-[,react]
-----
-import { RequireAuth, useFusionAuth } from '@fusionauth/react-sdk';
-
-const UserNameDisplay = () => {
-  const { user } = useFusionAuth();
-
-  return (
-    <RequireAuth>
-      <p>User: {user.name}</p> // Only displays if user is authenticated
-    </RequireAuth>
-  );
-};
-
-const AdminPanel = () => (
-  <RequireAuth withRole="admin">
-    <button>Delete User</button> // Only displays if user is authenticated and has 'admin' role
-  </RequireAuth>
-);
-----
+The `startLogin` and `startRegistration` functions both accept an optional string
+parameter called `state`. The login and register components can also be passed the
+state as an input. The state that is passed in to the function call will be echoed
+back in the state query parameter of the callback uri specified in `redirectUri` on
+the `FusionAuthConfig` used to initialize the `FusionAuthModule`. Though you may
+pass any value you would like for the state parameter, it is often used to indicate
+which page the user was on before redirecting to login or registration, so that the
+user can be returned to that location after a successful authentication.
 
 === Known Issues
 
-==== Token exchange endpoint being called repeatedly
-
-If you see the token exchange endpoint being called multiple times, this
-is due to a dev time setting in React 18. When running using
-`StrictMode` in development mode, React 18 will mount, unmount, and
-remount all components in this mode, which results in the network call
-running twice.
-
-This will not happen in a production build or if `StrictMode` is
-disabled.
-
-If you remove the `React.StrictMode` tags in `index.tsx` of the example
-app, the call is only made once.
-
 == Example App
 
-See the https://github.com/FusionAuth/fusionauth-example-react-sdk[FusionAuth React SDK
+See the https://github.com/FusionAuth/fusionauth-example-angular-sdk[FusionAuth Angular SDK
 Example] for
-functional example of a React client that utilizes the SDK as well as an
+functional example of a Angular client that utilizes the SDK as well as an
 Express server that performs the token exchange.
 
 == Documentation
 
-https://github.com/FusionAuth/fusionauth-react-sdk/blob/main/docs/documentation.md[Full library
+https://github.com/FusionAuth/fusionauth-angular-sdk/blob/main/docs/documentation.md[Full library
 documentation]
 
 // end::forDocSite[]
 
 Use backticks for code in this readme. This readme gets turned into asciidoc and included on the fusionauth website, and backticks show the code in the best light there.
 
-== Formatting
-
-There are several linting packages run when you push to a branch. One is `prettier`. If this fails, you can fix the files from the command line:
-
-* npm run install
-* npm run prettier -- -w /path/to/file
-
-Doing this will overwrite your file, but fix prettier's objections.
-
 == Releases
 
 To perform a release:
 
 * Pull the code to your local machine
-* Bump the version in `package.json`
-* Run `npm run webpack`
+* Bump the version in link:./projects/fusionauth-angular-sdk/package.json[package.json]
+* Run `npm run build-sdk`
+* Run `cd dist/fusionauth-angular-sdk`
 * Run `npm publish`
 
 You may have to set up your machine to be able to publish, which will

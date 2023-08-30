@@ -342,3 +342,4 @@ involve updating your .npmrc file.
 There’s information [here that you can
 use](https://dev.to/alexeagleson/how-to-create-and-publish-a-react-component-library-2oe)
 to do that (look for the `.npmrc` section).
+
