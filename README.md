@@ -322,22 +322,4 @@ Use backticks for code in this readme. This readme gets turned into asciidoc and
 
 # Releases
 
-To perform a release:
-
--   Pull the code to your local machine
-
--   Bump the version in [package.json](./projects/fusionauth-angular-sdk/package.json)
-
--   Run `npm run build-sdk`
-
--   Run `cd dist/fusionauth-angular-sdk`
-
--   Run `npm publish`
-
-You may have to set up your machine to be able to publish, which will
-involve updating your .npmrc file.
-
-There’s information [here that you can
-use](https://dev.to/alexeagleson/how-to-create-and-publish-a-react-component-library-2oe)
-to do that (look for the `.npmrc` section).
-
+To perform a release to NPM, create a release on GitHub. That will automatically publish a release to GitHub.
