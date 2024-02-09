@@ -20,6 +20,8 @@ An SDK for using FusionAuth in Angular applications.
 
 -   [Example App](#example-app)
 
+-   [Quickstart](#quickstart)
+
 -   [Documentation](#documentation)
 
 -   [Releases](#releases)
@@ -30,11 +32,11 @@ this tag, and the corresponding end tag, are used to delineate what is pulled in
 Please also use ``` instead of indenting for code blocks. The backticks are translated correctly to adoc format.
 -->
 
+# Overview
+
 <!--
 tag::forDocSite[]
 -->
-
-# Overview
 
 This SDK allows you to add login, logout, and registration buttons to
 your Angular application. You can do this via pre-built buttons, or with 
@@ -64,9 +66,9 @@ Requirements](#server-code-requirements) for more details.
 You can use this library against any version of FusionAuth or any OIDC
 compliant identity server.
 
-# Getting Started
+## Getting Started
 
-## Installation
+### Installation
 
 NPM:
 
@@ -80,7 +82,7 @@ Yarn:
 yarn add @fusionauth/angular-sdk
 ```
 
-## Configuring FusionAuthModule
+### Configuring FusionAuthModule
 
 To configure the SDK, wrap your app with `FusionAuthProvider`:
 
@@ -113,7 +115,7 @@ Authenticating with FusionAuth requires you to set up a server that will
 be used to perform the OAuth token exchange. This server must have the
 following endpoints:
 
-### `GET /app/login`
+#### `GET /app/login`
 
 This endpoint must:
 
@@ -126,7 +128,7 @@ This endpoint must:
 [Example
 implementation](https://github.com/FusionAuth/fusionauth-example-angular-sdk/blob/main/server/routes/login.js)
 
-### `GET /app/callback`
+#### `GET /app/callback`
 
 This endpoint must:
 
@@ -156,7 +158,7 @@ This endpoint must:
 [Example
 implementation](https://github.com/FusionAuth/fusionauth-example-angular-sdk/blob/main/server/routes/callback.js)
 
-### `GET /app/register`
+#### `GET /app/register`
 
 This endpoint is similar to `/login`.  It must:
 
@@ -169,7 +171,7 @@ This endpoint is similar to `/login`.  It must:
 [Example
 implementation](https://github.com/FusionAuth/fusionauth-example-angular-sdk/blob/main/server/routes/register.js)
 
-### `GET /app/me`
+#### `GET /app/me`
 
 This endpoint must:
 
@@ -179,7 +181,7 @@ This endpoint must:
 [Example
 implementation](https://github.com/FusionAuth/fusionauth-example-angular-sdk/blob/main/server/routes/me.js)
 
-### `GET /app/logout`
+#### `GET /app/logout`
 
 This endpoint must:
 
@@ -191,7 +193,7 @@ This endpoint must:
 [Example
 implementation](https://github.com/FusionAuth/fusionauth-example-angular-sdk/blob/main/server/routes/logout.js)
 
-### `POST /app/refresh` (optional)
+#### `POST /app/refresh` (optional)
 
 This endpoint is necessary if you wish to use refresh tokens. This
 endpoint must:
@@ -206,9 +208,9 @@ endpoint must:
 [Example
 implementation](https://github.com/FusionAuth/fusionauth-example-angular-sdk/blob/main/server/routes/token-refresh.js)
 
-# Usage
+## Usage
 
-## Pre-built buttons
+### Pre-built buttons
 
 There are three pre-styled buttons that are configured to perform
 login/logout/registration. They can be placed anywhere in your app as
@@ -239,7 +241,7 @@ export class LogoutComponent {}
 export class RegisterComponent {}
 ```
 
-## Service usage
+### Service usage
 
 Alternatively, you may interact with the SDK Service by injecting the FusionAuthService into any component or service.
 
@@ -289,7 +291,7 @@ export class AppComponent implements OnInit {
 }
 ```
 
-### State parameter
+#### State parameter
 
 The `startLogin` and `startRegistration` functions both accept an optional string
 parameter called `state`. The login and register components can also be passed the 
@@ -300,16 +302,22 @@ pass any value you would like for the state parameter, it is often used to indic
 which page the user was on before redirecting to login or registration, so that the
 user can be returned to that location after a successful authentication.
 
-## Known Issues
+### Known Issues
 
-# Example App
+None.
+
+## Example App
 
 See the [FusionAuth Angular SDK
 Example](https://github.com/FusionAuth/fusionauth-example-angular-sdk) for
 functional example of a Angular client that utilizes the SDK as well as an
 Express server that performs the token exchange.
 
-# Documentation
+## Quickstart
+
+See the [FusionAuth Angular Quickstart](https://fusionauth.io/docs/quickstarts/quickstart-javascript-angular-web) for a full tutorial on using FusionAuth and Angular.
+
+## Documentation
 
 [Full library
 documentation](https://github.com/FusionAuth/fusionauth-angular-sdk/blob/main/docs/documentation.md)
@@ -318,8 +326,8 @@ documentation](https://github.com/FusionAuth/fusionauth-angular-sdk/blob/main/do
 end::forDocSite[]
 -->
 
-Use backticks for code in this readme. This readme gets turned into asciidoc and included on the fusionauth website, and backticks show the code in the best light there.
+Use backticks for code in this readme. This readme is included on the FusionAuth website, and backticks show the code in the best light there.
 
-# Releases
+## Releases
 
 To perform a release to NPM, create a release on GitHub. That will automatically publish a release to GitHub.
