@@ -14,10 +14,6 @@ export class FusionAuthRegisterButtonComponent {
   ) {}
 
   register() {
-    if (!this.state) {
-      this.fusionAuth.startRegistration();
-    } else {
-      this.fusionAuth.startRegistration(this.state);
-    }
+    this.fusionAuth.startRegistration(this.state);
   }
 }

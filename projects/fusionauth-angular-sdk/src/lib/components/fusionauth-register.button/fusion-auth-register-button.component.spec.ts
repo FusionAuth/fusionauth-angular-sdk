@@ -8,9 +8,9 @@ describe('FusionauthRegisterButtonComponent', () => {
   let fixture: ComponentFixture<FusionAuthRegisterButtonComponent>;
   let mockService = jasmine.createSpyObj('FusionAuthService', ['startRegistration'])
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ FusionAuthRegisterButtonComponent ],
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [FusionAuthRegisterButtonComponent],
       providers: [
         { provide: FusionAuthService, useValue: mockService }
       ]
@@ -19,12 +19,16 @@ describe('FusionauthRegisterButtonComponent', () => {
 
     fixture = TestBed.createComponent(FusionAuthRegisterButtonComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should invoke the startRegistration method', () => {
     expect(component).toBeTruthy();
+
+    const stateValue = 'hello-world';
+    component.state = stateValue;
+    fixture.detectChanges();
+
     component.register();
-    expect(mockService.startRegistration).toHaveBeenCalled();
+    expect(mockService.startRegistration).toHaveBeenCalledWith(stateValue);
   });
 });
