@@ -11,12 +11,7 @@ export class FusionAuthLoginButtonComponent {
 
   constructor(private fusionAuth: FusionAuthService) {}
 
-  async login() {
-    if (!this.state) {
-      await this.fusionAuth.startLogin();
-    } else {
-      await this.fusionAuth.startLogin(this.state);
-    }
-
+  login() {
+    this.fusionAuth.startLogin(this.state);
   }
 }

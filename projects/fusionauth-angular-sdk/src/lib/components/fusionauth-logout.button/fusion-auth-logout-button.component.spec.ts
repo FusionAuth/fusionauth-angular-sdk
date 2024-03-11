@@ -8,9 +8,9 @@ describe('FusionauthLogoutButtonComponent', () => {
   let fixture: ComponentFixture<FusionAuthLogoutButtonComponent>;
   let mockService = jasmine.createSpyObj('FusionAuthService', ['logout']);
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ FusionAuthLogoutButtonComponent ],
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [FusionAuthLogoutButtonComponent],
       providers: [
         { provide: FusionAuthService, useValue: mockService }
       ]
@@ -22,7 +22,7 @@ describe('FusionauthLogoutButtonComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should invoke the logout method', () => {
     expect(component).toBeTruthy();
     component.logout();
     expect(mockService.logout).toHaveBeenCalled();
