@@ -14,9 +14,12 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
-      - run: npm ci
-      - run: npm run build-sdk
-      - run: cd dist/fusionauth-angular-sdk
-      - run: npm publish
+      - name: install packages
+        run: npm ci
+      - name: build package
+        run: npm run build-sdk
+      - name: publish package
+        working-directory: ./dist/fusionauth-angular-sdk
+        run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
