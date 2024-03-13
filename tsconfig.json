@@ -22,11 +22,7 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-<<<<<<< HEAD
-    "target": "es2017",
-=======
     "target": "ES2022",
->>>>>>> 9daae15 (Upgrade Angular to v15)
     "module": "es2020",
     "lib": [
       "es2020",
