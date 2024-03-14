@@ -35,5 +35,7 @@
       }
     }
   },
-  "defaultProject": "fusionauth-angular-sdk"
+  "cli": {
+    "analytics": false
+  }
 }
