@@ -1,3 +1,5 @@
+**This repo is out of date and is archived. `@fusionauth/angular-sdk` is currently maintained at https://github.com/FusionAuth/fusionauth-javascript-sdk/tree/main/packages/sdk-angular**
+
 An SDK for using FusionAuth in Angular applications.
 
 # Table of Contents
@@ -15,8 +17,6 @@ An SDK for using FusionAuth in Angular applications.
   -   [Service usage](#service-usage)
 
   -   [Known issues](#known-issues)
-
--   [Example App](#example-app)
 
 -   [Quickstart](#quickstart)
 
